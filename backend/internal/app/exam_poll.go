@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/trivo25/exam-poll/backend/internal/handler"
+	"github.com/FugiMuffi/exam-poll/backend/internal/handler"
 )
 
 func InitiateExamPoll() {

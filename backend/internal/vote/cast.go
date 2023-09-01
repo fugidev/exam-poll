@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	"github.com/trivo25/exam-poll/backend/internal/env"
-	"github.com/trivo25/exam-poll/backend/internal/mongo"
-	"github.com/trivo25/exam-poll/backend/internal/poll"
+	"github.com/FugiMuffi/exam-poll/backend/internal/env"
+	"github.com/FugiMuffi/exam-poll/backend/internal/mongo"
+	"github.com/FugiMuffi/exam-poll/backend/internal/poll"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/trivo25/exam-poll/backend/internal/env"
+	"github.com/FugiMuffi/exam-poll/backend/internal/env"
 	"reflect"
 
 	goaway "github.com/TwinProduction/go-away"
-	"github.com/trivo25/exam-poll/backend/internal/mongo"
+	"github.com/FugiMuffi/exam-poll/backend/internal/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

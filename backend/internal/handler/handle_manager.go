@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
-	"github.com/trivo25/exam-poll/backend/internal/poll"
-	"github.com/trivo25/exam-poll/backend/internal/vote"
+	"github.com/FugiMuffi/exam-poll/backend/internal/poll"
+	"github.com/FugiMuffi/exam-poll/backend/internal/vote"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+	"log"
 )
 
 func RequestHandler() {
@@ -43,7 +44,7 @@ func RequestHandler() {
 	err := srv.ListenAndServe()
 
 	if err != nil {
-		fmt.Println("some error has occurred creating the http server")
+		log.Fatal(err)
 	}
 
 }

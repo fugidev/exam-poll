@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/trivo25/exam-poll/backend/internal/app"
-	"github.com/trivo25/exam-poll/backend/internal/cron"
-	"github.com/trivo25/exam-poll/backend/internal/env"
+	"github.com/FugiMuffi/exam-poll/backend/internal/app"
+	"github.com/FugiMuffi/exam-poll/backend/internal/cron"
+	"github.com/FugiMuffi/exam-poll/backend/internal/env"
 )
 
 func main() {

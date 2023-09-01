@@ -1,4 +1,4 @@
-module github.com/trivo25/exam-poll/backend
+module github.com/FugiMuffi/exam-poll/backend
 
 go 1.17
 
