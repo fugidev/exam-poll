@@ -21,6 +21,12 @@ class ResultBarChart extends Component<ResultBarChartProps> {
   }
 
   componentDidMount() {
+    const totalCount = Object.values(this.props.results).reduce((a, b) => a + b, 0)
+
+    const getBarLabel = (label: string, count: number) => {
+      return `${count} ${count === 1 ? 'vote' : 'votes'} for ${label} (${Math.round(count / totalCount * 100)} percent)`
+    }
+
     const svg = d3
       .select(this.divRef.current)
       .append("svg")
@@ -34,14 +40,27 @@ class ResultBarChart extends Component<ResultBarChartProps> {
       .data(this.data.map(v => v[1]))
       .enter()
       .append("g")
-      .attr("transform", (d, i) =>  "translate(" + i * (this.barWidth + this.margin) + ", " + (this.height - scale(d)) + ")");
+      .attr("transform", (d, i) =>  `translate(${i * (this.barWidth + this.margin)}, 0)`)
+      .attr("aria-label", (d, i) => getBarLabel(this.data[i][0], this.data[i][1]));
 
     g.append("rect")
+      .attr("aria-hidden", true)
+      .attr("height", this.height)
+      .attr("width", this.barWidth)
+      .attr("fill", "transparent")
+
+    const g1 = g
+      .append("g")
+      .attr("transform", (d, i) =>  `translate(0, ${this.height - scale(d)})`)
+
+    g1.append("rect")
+      .attr("aria-hidden", true)
       .attr("height", d => scale(d))
       .attr("width", this.barWidth)
       .attr("fill", "#f7fff7");
 
-    g.append("text")
+    g1.append("text")
+      .attr("aria-hidden", true)
       .attr("fill", "white")
       .attr("alignment-baseline", "central")
       .attr("dy", "-1em")
@@ -50,7 +69,8 @@ class ResultBarChart extends Component<ResultBarChartProps> {
       .attr("transform", d => "translate(" + 0 + ", " + scale(d) + ")")
       .text((d, i) => this.data[i][0]);
 
-    g.append("text")
+    g1.append("text")
+      .attr("aria-hidden", true)
       .attr("fill", "white")
       .attr("alignment-baseline", "central")
       .attr("dy", "1em")
