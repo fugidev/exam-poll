@@ -5,6 +5,7 @@ import Head from 'next/head'
 import Error from 'next/error'
 import Moment from 'react-moment'
 import React, { useState, useEffect, useRef } from 'react'
+import ReactDOMServer from 'react-dom/server'
 import { use100vh } from 'react-div-100vh'
 import { nanoid } from 'nanoid'
 import ReactTooltip from 'react-tooltip';
@@ -126,6 +127,11 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
     });
   }
 
+  const momentFn = (props: React.ComponentPropsWithoutRef<typeof Moment>) => {
+    const comp = <Moment {...props} element="time" />
+    return ReactDOMServer.renderToString(comp).replace(/<[^>]*>/g, '')
+  }
+
   const [pollData, setPollData] = useState(data);
   const [timerFinished, setTimerFinished] = useState(false);
   const [editCode, setEditCode] = useState("");
@@ -199,7 +205,21 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
         </h1>
 
         { pollData.description.length > 0 ? <p>{pollData.description}</p> : '' }
-        <p>{ timerFinished ? 'This poll has ended.' : <>This poll ends <Moment fromNow date={end_date} onChange={checkTimerFinished} />.</> }</p>
+
+        {timerFinished ? (
+          <p>This poll has ended.</p>
+        ) : (
+          <p>
+            {'This poll ends ' +
+              momentFn({
+                fromNow: true,
+                date: end_date,
+                onChange: checkTimerFinished,
+              }) +
+              '.'}
+          </p>
+        )}
+
 
         { editCode && typeof window.location !== 'undefined' ? <>
         <div>

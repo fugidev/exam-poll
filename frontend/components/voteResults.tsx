@@ -21,8 +21,8 @@ const VoteResults: React.FC<Props> = ({ results }) => {
     <>
       <ResultBarChart results={results} />
 
-      <p>Total Votes: {voteCount}</p>
-      <p>Failure Rate: {failureRate}%</p>
+      <p>{`Total Votes: ${voteCount}`}</p>
+      <p>{`Failure Rate: ${failureRate}%`}</p>
     </>
   )
 }

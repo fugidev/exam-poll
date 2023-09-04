@@ -44,13 +44,13 @@ const CreatePollForm: React.FC<Props> = ({
         required
       >
         <option value="" disabled hidden>Duration</option>
-        <option value="4h">4h</option>
-        <option value="8h">8h</option>
-        <option value="12h">12h</option>
-        <option value="1d">1d</option>
-        <option value="2d">2d</option>
-        <option value="4d">4d</option>
-        <option value="7d">7d</option>
+        <option value="4h">4 hours</option>
+        <option value="8h">8 hours</option>
+        <option value="12h">12 hours</option>
+        <option value="1d">1 day</option>
+        <option value="2d">2 days</option>
+        <option value="4d">4 days</option>
+        <option value="7d">7 days</option>
       </select>
 
       <button type="submit">{edit ? 'Edit Poll' : 'Create Poll'}</button>
