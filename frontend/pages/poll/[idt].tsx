@@ -9,7 +9,7 @@ import ReactDOMServer from 'react-dom/server'
 import { use100vh } from 'react-div-100vh'
 import { nanoid } from 'nanoid'
 import ReactTooltip from 'react-tooltip';
-import { FaPencilAlt } from 'react-icons/fa'
+import { FaPencilAlt, FaCopy } from 'react-icons/fa'
 import { IoMdClose } from 'react-icons/io'
 import CreatePollForm from 'components/createPollForm'
 import CastVoteForm from 'components/castVoteForm'
@@ -104,13 +104,11 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
     }
   }
 
-  const copyURL: React.MouseEventHandler<HTMLInputElement> = async (e) => {
+  const copyURL: React.MouseEventHandler<HTMLInputElement|HTMLAnchorElement> = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
-    const input = e.target as typeof e.target & {
-      value: string;
-      select: Function;
-    };
+    const input = shareRef.current;
 
     input.select();
 
@@ -223,17 +221,32 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
 
         { editCode && typeof window.location !== 'undefined' ? <>
         <div>
-          Share this poll:
-          <input
-            type="text"
-            className={styles.shareURL}
-            ref={shareRef}
-            readOnly
-            onClick={copyURL}
-            defaultValue={window.location.href.replace(location.hash,'')}
-            data-tip
-            data-for="shareUrlTip"
-          />
+          <label htmlFor="sharePollLink">
+            Share a link to this poll:
+          </label>
+          <div className={styles.sharePollWrapper}>
+            <a
+              role="button"
+              className={styles.copyButton}
+              title="Copy link to clipboard"
+              data-tip
+              data-for="shareUrlTip"
+              onClick={copyURL}
+            >
+              <FaCopy />
+            </a>
+            <input
+              type="text"
+              id="sharePollLink"
+              className={styles.shareURL}
+              ref={shareRef}
+              data-tip
+              data-for="shareUrlTip"
+              readOnly
+              defaultValue={window.location.href.replace(location.hash,'')}
+              onClick={copyURL}
+            />
+          </div>
           <ReactTooltip
             id="shareUrlTip"
             place="bottom"
