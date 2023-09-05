@@ -186,7 +186,7 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
   return (
     <>
       <Head>
-        <title>{pollData.title}</title>
+        <title>{pollData.title + ' | Exam Poll'}</title>
         <meta name="description" content={pollData.description} />
       </Head>
 

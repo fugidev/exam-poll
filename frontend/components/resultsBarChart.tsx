@@ -21,6 +21,9 @@ class ResultBarChart extends Component<ResultBarChartProps> {
   }
 
   componentDidMount() {
+    // initially focus the bar chart after pressing vote / show results, for screen readers
+    this.divRef.current.focus()
+
     const totalCount = Object.values(this.props.results).reduce((a, b) => a + b, 0)
 
     const getBarLabel = (label: string, count: number) => {
@@ -91,7 +94,7 @@ class ResultBarChart extends Component<ResultBarChartProps> {
           mix-blend-mode: difference;
         }
       `}</style>
-      <div ref={this.divRef}></div>
+      <div ref={this.divRef} tabIndex={-1}></div>
     </>
   }
 }
