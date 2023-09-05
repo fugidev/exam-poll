@@ -1,0 +1,56 @@
+@import 'theme';
+
+#editDialog {
+  width: min(95vw, 400px);
+  background: $background-color;
+  padding: 3rem;
+  border-radius: .5rem;
+  border: none;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+
+  h3 {
+    margin-top: 0;
+    color: $text-color;
+  }
+
+  label {
+    margin: 0 0 4px;
+    color: $text-color;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  input, select {
+    margin-bottom: 1rem;
+  }
+
+  button {
+    margin-top: 1rem;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  line-height: 0;
+  font-size: 1.5rem;
+  color: $text-color;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .7;
+  }
+}

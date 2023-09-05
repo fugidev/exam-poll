@@ -10,16 +10,14 @@ import { use100vh } from 'react-div-100vh'
 import { nanoid } from 'nanoid'
 import ReactTooltip from 'react-tooltip';
 import { FaPencilAlt, FaCopy } from 'react-icons/fa'
-import { IoMdClose } from 'react-icons/io'
-import CreatePollForm from 'components/createPollForm'
 import CastVoteForm from 'components/castVoteForm'
 import VoteResults from 'components/voteResults'
+import EditDialog, { useEditDialog } from 'components/editDialog'
 
 
 type Props = { data: GetPollData, idt?: string } & { errorCode: number, errorMsg?: string }
 
 const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
-
   const checkTimerFinished = () => {
     if (!timerFinished && end_date < new Date()) setTimerFinished(true);
   }
@@ -60,46 +58,8 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
 
     if (res.Type == "success") {
       window.localStorage.setItem(res.Data.idt, form.vote.value);
-      setUserVote(form.vote.value);
       setPollData(res.Data);
       setShowResults(true);
-      return
-    }
-  }
-
-  const editPoll = async (e: React.FormEvent<HTMLElement>) => {
-    e.preventDefault();
-
-    const form = e.target as typeof e.target & {
-      title: { value: string };
-      description: { value: string };
-      duration: { value: string };
-    };
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/editPoll`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        idt: data.idt,
-        title: form.title.value,
-        description: form.description.value,
-        edit: editCode
-      })
-    });
-
-    const res: GetPoll = await response.json();
-    console.log(res);
-
-    if (res.Type == "failure") {
-      alert(res.Error);
-      return
-    }
-
-    if (res.Type == "success") {
-      setPollData(res.Data);
-      setEditModalVisible(false);
       return
     }
   }
@@ -133,50 +93,26 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
   const [pollData, setPollData] = useState(data);
   const [timerFinished, setTimerFinished] = useState(false);
   const [editCode, setEditCode] = useState("");
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [userVote, setUserVote] = useState("");
   const [showResults, setShowResults] = useState(false);
   const [tipText, setTipText] = useState("Click to copy");
+  const [dialogRef, openDialog] = useEditDialog();
   const height = use100vh();
   const screenHeight = height ? `${height}px` : '100vh';
   const shareRef = useRef<HTMLInputElement>(null);
 
-  // componentDidMount
+  /* componentDidMount */
   useEffect(() => {
+    // check for edit code in url
     if (window.location.hash) setEditCode(window.location.hash.replace('#', ''));
 
+    // check if user has already voted
     if (idt) {
       const vote = window.localStorage.getItem(idt);
-      if (vote) {
-        setUserVote(vote);
-        setShowResults(true);
-      }
+      if (vote) setShowResults(true);
     }
   }, [idt])
 
   if (errorCode) return <Error statusCode={errorCode} title={errorMsg} />
-
-  const editModal = (
-    <div id={styles.backdrop} style={{display: editModalVisible ? "flex" : "none"}} onClick={() => {setEditModalVisible(false)}}>
-      <div id={styles.editModal} onClick={(e) => {e.stopPropagation();}}>
-        <a className={styles.closeButton} onClick={() => {setEditModalVisible(false)}}>
-          <IoMdClose/>
-        </a>
-
-        <div className={styles.wrapper}>
-          <h3>Edit Poll</h3>
-
-          <CreatePollForm edit
-            onSubmit={editPoll}
-            className={styles.form}
-            title={pollData.title}
-            description={pollData.description}
-            duration={pollData.duration}
-          />
-        </div>
-      </div>
-    </div>
-  )
 
   const end_date = new Date(data.end_time * 1000);
   checkTimerFinished();
@@ -194,15 +130,33 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
         }
       `}</style>
 
-      { editCode ? editModal : '' }
+      {!!editCode && (
+        <EditDialog
+          dialogRef={dialogRef}
+          pollData={pollData}
+          setPollData={setPollData}
+          editCode={editCode}
+          idt={idt}
+        />
+      )}
 
       <main className={styles.main}>
         <h1>
           {pollData.title}
-          { editCode ? <a className={styles.editButton} onClick={() => setEditModalVisible(true)}><FaPencilAlt/></a> : '' }
+          {!!editCode && (
+            <a
+              role="button"
+              title="Edit Poll"
+              className={styles.editButton}
+              onClick={() => openDialog()}
+              tabIndex={0}
+            >
+              <FaPencilAlt />
+            </a>
+          )}
         </h1>
 
-        { pollData.description.length > 0 ? <p>{pollData.description}</p> : '' }
+        {pollData.description.length > 0 && <p>{pollData.description}</p>}
 
         {timerFinished ? (
           <p>This poll has ended.</p>
@@ -259,19 +213,23 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
         </div>
         </> : '' }
 
-        { !timerFinished && !showResults ?
+        {!timerFinished && !showResults ? (
           <>
             <CastVoteForm
               onSubmit={castVote}
               className={styles.voteForm}
               voteOptions={Object.keys(data.results)}
             />
-            <button className={styles.resultButton} onClick={() => {setShowResults(true);}}>Show Results</button>
+            <button
+              className={styles.resultButton}
+              onClick={() => setShowResults(true)}
+            >
+              Show Results
+            </button>
           </>
-        :
+        ) : (
           <VoteResults results={pollData.results} />
-        }
-
+        )}
       </main>
     </>
   )

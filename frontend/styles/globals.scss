@@ -42,10 +42,11 @@ textarea {
 
   &::placeholder {
     color: $placeholder-color;
+    opacity: 1;
   }
 
   &:focus {
-    outline: 2px solid;
+    outline: 2px solid #fff;
   }
 }
 
@@ -64,7 +65,11 @@ select {
     color: $placeholder-color;
   }
 
-  option{
+  &[disabled] {
+    color: $placeholder-color;
+  }
+
+  option {
     color: $text-color;
   }
 }
