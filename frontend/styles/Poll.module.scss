@@ -34,27 +34,3 @@
     column-gap: 2rem;
   }
 }
-
-.sharePollWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.copyButton {
-  position: absolute;
-  right: 0;
-  cursor: pointer;
-  padding: 10px;
-
-  &:hover {
-    opacity: .7;
-  }
-}
-
-input.shareURL {
-  font-size: 14px;
-  padding-right: 36px;
-  width: 260px;
-}

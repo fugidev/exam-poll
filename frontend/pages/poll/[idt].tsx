@@ -1,17 +1,17 @@
 import type { NextPage, GetServerSidePropsContext } from 'next'
-import type { GetPoll, GetPollData } from 'types/getPoll'
-import styles from 'styles/Poll.module.scss'
 import Head from 'next/head'
 import Error from 'next/error'
 import Moment from 'react-moment'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { use100vh } from 'react-div-100vh'
 import { nanoid } from 'nanoid'
-import ReactTooltip from 'react-tooltip';
-import { FaPencilAlt, FaCopy } from 'react-icons/fa'
+import { FaPencilAlt } from 'react-icons/fa'
+import styles from 'styles/Poll.module.scss'
+import type { GetPoll, GetPollData } from 'types/getPoll'
 import CastVoteForm from 'components/castVoteForm'
 import VoteResults from 'components/voteResults'
+import ShareLink from 'components/shareLink'
 import EditDialog, { useEditDialog } from 'components/editDialog'
 
 
@@ -64,27 +64,6 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
     }
   }
 
-  const copyURL: React.MouseEventHandler<HTMLInputElement|HTMLAnchorElement> = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const input = shareRef.current;
-
-    input.select();
-
-    navigator.clipboard.writeText(input.value).then(() => {
-      const tmp = tipText;
-      setTipText("Copied to clipboard!");
-      if (shareRef.current) ReactTooltip.show(shareRef.current);
-      setTimeout(() => {
-        setTipText(tmp);
-        const tooltip = document.getElementById('shareUrlTip');
-        if (shareRef.current && tooltip && window.getComputedStyle(tooltip).getPropertyValue("visibility") == 'visible')
-          ReactTooltip.show(shareRef.current);
-      }, 2000);
-    });
-  }
-
   const momentFn = (props: React.ComponentPropsWithoutRef<typeof Moment>) => {
     const comp = <Moment {...props} element="time" />
     return ReactDOMServer.renderToString(comp).replace(/<[^>]*>/g, '')
@@ -94,11 +73,9 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
   const [timerFinished, setTimerFinished] = useState(false);
   const [editCode, setEditCode] = useState("");
   const [showResults, setShowResults] = useState(false);
-  const [tipText, setTipText] = useState("Click to copy");
   const [dialogRef, openDialog] = useEditDialog();
   const height = use100vh();
   const screenHeight = height ? `${height}px` : '100vh';
-  const shareRef = useRef<HTMLInputElement>(null);
 
   /* componentDidMount */
   useEffect(() => {
@@ -172,46 +149,7 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
           </p>
         )}
 
-
-        { editCode && typeof window.location !== 'undefined' ? <>
-        <div>
-          <label htmlFor="sharePollLink">
-            Share a link to this poll:
-          </label>
-          <div className={styles.sharePollWrapper}>
-            <a
-              role="button"
-              className={styles.copyButton}
-              title="Copy link to clipboard"
-              data-tip
-              data-for="shareUrlTip"
-              onClick={copyURL}
-            >
-              <FaCopy />
-            </a>
-            <input
-              type="text"
-              id="sharePollLink"
-              className={styles.shareURL}
-              ref={shareRef}
-              data-tip
-              data-for="shareUrlTip"
-              readOnly
-              defaultValue={window.location.href.replace(location.hash,'')}
-              onClick={copyURL}
-            />
-          </div>
-          <ReactTooltip
-            id="shareUrlTip"
-            place="bottom"
-            effect="solid"
-            backgroundColor="#000"
-            textColor="#fff"
-          >
-            {tipText}
-          </ReactTooltip>
-        </div>
-        </> : '' }
+        {editCode && typeof window.location !== 'undefined' && <ShareLink />}
 
         {!timerFinished && !showResults ? (
           <>
