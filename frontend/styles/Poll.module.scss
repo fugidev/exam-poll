@@ -10,6 +10,16 @@
   align-items: center;
 }
 
+.headingWrapper {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 1rem;
+
+  h1 {
+    margin-bottom: 0;
+  }
+}
+
 .editButton {
   font-size: 1.25rem;
   margin-left: .5rem;

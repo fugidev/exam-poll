@@ -22,9 +22,7 @@ const CastVoteForm: React.FC<Props> = ({
   return (
     <form onSubmit={onSubmit} className={className}>
       <div>{options}</div>
-      <button type="submit" style={{ fontWeight: 'bold' }}>
-        Vote
-      </button>
+      <button type="submit">Vote</button>
     </form>
   )
 }

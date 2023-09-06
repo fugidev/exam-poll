@@ -76,7 +76,7 @@ const EditDialog: React.FC<EditDialogProps> = (props) => {
           title="close"
           className={styles.closeButton}
           onClick={() => dialogRef.current.close()}
-          >
+        >
           <IoMdClose />
         </a>
 

@@ -1,14 +1,13 @@
-import { useState } from 'react'
-import styles from 'styles/Poll.module.scss'
 import ResultBarChart from 'components/resultsBarChart'
 
 type Props = {
   results: {
     [option: string]: number
   }
+  initalFocus: boolean
 }
 
-const VoteResults: React.FC<Props> = ({ results }) => {
+const VoteResults: React.FC<Props> = ({ results, initalFocus }) => {
   const voteCount = Object.values(results).reduce((a, b) => a + b, 0)
 
   const failureRate = Math.round(results['5.0'] / voteCount * 100)
@@ -19,7 +18,7 @@ const VoteResults: React.FC<Props> = ({ results }) => {
 
   return (
     <>
-      <ResultBarChart results={results} />
+      <ResultBarChart results={results} initialFocus={initalFocus} />
 
       <p>{`Total Votes: ${voteCount}`}</p>
       <p>{`Failure Rate: ${failureRate}%`}</p>

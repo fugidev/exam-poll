@@ -50,8 +50,16 @@ textarea {
   }
 }
 
-button:hover {
-  background: $button-hover-bg;
+button {
+  background: $button-bg-color;
+
+  &:hover {
+    background: $button-hover-bg;
+  }
+
+  &[type="submit"] {
+    font-weight: bold;
+  }
 }
 
 select {
@@ -96,7 +104,7 @@ select {
     left: 0;
     height: 1.5rem;
     width: 1.5rem;
-    background-color: $input-bg-color;
+    background-color: $button-bg-color;
     border-radius: 50%;
     border: 1px solid rgba(0,0,0,.5);
   }

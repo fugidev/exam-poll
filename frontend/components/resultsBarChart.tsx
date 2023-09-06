@@ -5,6 +5,7 @@ type ResultBarChartProps = {
   results: {
     [option: string]: number;
   };
+  initialFocus: boolean
 }
 
 class ResultBarChart extends Component<ResultBarChartProps> {
@@ -22,7 +23,7 @@ class ResultBarChart extends Component<ResultBarChartProps> {
 
   componentDidMount() {
     // initially focus the bar chart after pressing vote / show results, for screen readers
-    this.divRef.current.focus()
+    if (this.props.initialFocus) this.divRef.current.focus()
 
     const totalCount = Object.values(this.props.results).reduce((a, b) => a + b, 0)
 

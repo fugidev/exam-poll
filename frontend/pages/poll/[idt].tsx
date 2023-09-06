@@ -59,7 +59,7 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
     if (res.Type == "success") {
       window.localStorage.setItem(res.Data.idt, form.vote.value);
       setPollData(res.Data);
-      setShowResults(true);
+      setShowResults("focus");
       return
     }
   }
@@ -72,7 +72,7 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
   const [pollData, setPollData] = useState(data);
   const [timerFinished, setTimerFinished] = useState(false);
   const [editCode, setEditCode] = useState("");
-  const [showResults, setShowResults] = useState(false);
+  const [showResults, setShowResults] = useState<"no"|"yes"|"focus">("no");
   const [dialogRef, openDialog] = useEditDialog();
   const height = use100vh();
   const screenHeight = height ? `${height}px` : '100vh';
@@ -85,7 +85,7 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
     // check if user has already voted
     if (idt) {
       const vote = window.localStorage.getItem(idt);
-      if (vote) setShowResults(true);
+      if (vote) setShowResults("yes");
     }
   }, [idt])
 
@@ -118,8 +118,9 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
       )}
 
       <main className={styles.main}>
-        <h1>
-          {pollData.title}
+        <div className={styles.headingWrapper}>
+          <h1>{pollData.title}</h1>
+
           {!!editCode && (
             <a
               role="button"
@@ -131,7 +132,7 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
               <FaPencilAlt />
             </a>
           )}
-        </h1>
+        </div>
 
         {pollData.description.length > 0 && <p>{pollData.description}</p>}
 
@@ -151,7 +152,7 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
 
         {editCode && typeof window.location !== 'undefined' && <ShareLink />}
 
-        {!timerFinished && !showResults ? (
+        {!timerFinished && showResults === "no" ? (
           <>
             <CastVoteForm
               onSubmit={castVote}
@@ -160,13 +161,13 @@ const Poll: NextPage<Props> = ({ data, idt, errorCode, errorMsg }) => {
             />
             <button
               className={styles.resultButton}
-              onClick={() => setShowResults(true)}
+              onClick={() => setShowResults("focus")}
             >
               Show Results
             </button>
           </>
         ) : (
-          <VoteResults results={pollData.results} />
+          <VoteResults results={pollData.results} initalFocus={showResults === "focus"} />
         )}
       </main>
     </>

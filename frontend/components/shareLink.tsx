@@ -19,7 +19,7 @@ const ShareLink: React.FC = () => {
 
       const timeoutId = setTimeout(() => {
         setCopyConfirmationTimeout(null);
-      }, 2000)
+      }, 4000)
 
       setCopyConfirmationTimeout(timeoutId);
     });

@@ -18,23 +18,23 @@ const CreatePollForm: React.FC<Props> = ({
   duration = '',
 }) => (
   <form onSubmit={onSubmit} className={className}>
-    {edit && <label htmlFor="poll_title">Title:</label>}
+    {edit && <label htmlFor="poll_title">Title</label>}
     <input
       type="text"
       id="poll_title"
       name="title"
       defaultValue={title}
-      placeholder="Title"
+      placeholder={!edit && "Title"}
       required
     />
 
-    {edit && <label htmlFor="poll_description">Description:</label>}
+    {edit && <label htmlFor="poll_description">Description</label>}
     <input
       type="text"
       id="poll_description"
       name="description"
       defaultValue={description}
-      placeholder="Description"
+      placeholder={!edit && "Description"}
     />
 
     {!edit && (
@@ -58,7 +58,9 @@ const CreatePollForm: React.FC<Props> = ({
       </select>
     )}
 
-    <button type="submit">{edit ? 'Save' : 'Create Poll'}</button>
+    <button type="submit">
+      {edit ? 'Save' : 'Create Poll'}
+    </button>
   </form>
 )
 
