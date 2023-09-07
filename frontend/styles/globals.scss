@@ -82,54 +82,38 @@ select {
   }
 }
 
-.radio {
+div.radio {
   display: flex;
   flex-direction: row;
   align-items: center;
-  position: relative;
-  padding-left: 35px;
   margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  user-select: none;
 
-  input[type="radio"] {
-    position: absolute;
-    opacity: 0;
+  label {
     cursor: pointer;
+    user-select: none;
+    font-size: 22px;
+    padding-left: 10px;
   }
+}
 
-  .checkmark {
-    position: absolute;
-    left: 0;
-    height: 1.5rem;
-    width: 1.5rem;
-    background-color: $button-bg-color;
-    border-radius: 50%;
-    border: 1px solid rgba(0,0,0,.5);
-  }
+input[type="radio"] {
+  appearance: none;
+  border-radius: 50%;
+  height: 1.5rem;
+  width: 1.5rem;
+  margin: 0;
+  cursor: pointer;
+  background-color: $button-bg-color;
+  border: 1px solid rgba(0,0,0,.5);
 
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-    top: 6px;
-    left: 6px;
-    right: 6px;
-    bottom: 6px;
-    border-radius: 50%;
-    background: white;
-  }
-
-  &:hover .checkmark {
+  &:hover {
     background-color: $button-hover-bg;
   }
-
-  input[type="radio"]:checked ~ .checkmark {
-    background-color: #2196F3;
+  &:checked {
+    background-color: #fff;
+    border: 6px solid #2196F3;
   }
-
-  input[type="radio"]:checked ~ .checkmark:after {
-    display: block;
+  &:focus {
+    outline: 2.5px solid #fff;
   }
 }

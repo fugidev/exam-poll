@@ -12,11 +12,10 @@ const CastVoteForm: React.FC<Props> = ({
   voteOptions,
 }) => {
   const options = voteOptions.map((item, i) => (
-    <label className="radio" key={i}>
-      <span>{item}</span>
+    <div key={i} className="radio">
       <input type="radio" name="vote" id={`option_${item}`} value={item} />
-      <span className="checkmark" />
-    </label>
+      <label htmlFor={`option_${item}`}>{item}</label>
+    </div>
   ))
 
   return (
