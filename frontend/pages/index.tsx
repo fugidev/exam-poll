@@ -1,48 +1,52 @@
 import type { NextPage } from 'next'
-import type { GetPoll } from 'types/getPoll'
-import styles from 'styles/Home.module.scss'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { use100vh } from 'react-div-100vh'
+
 import CreatePollForm from 'components/createPollForm'
+import styles from 'styles/Home.module.scss'
+import type { GetPoll } from 'types/getPoll'
 
 const Home: NextPage = () => {
-  const height = use100vh();
-  const screenHeight = height ? `${height}px` : '100vh';
+  const height = use100vh()
+  const screenHeight = height ? `${height}px` : '100vh'
 
-  const router = useRouter();
+  const router = useRouter()
 
   const createPoll = async (e: React.FormEvent<HTMLElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const form = e.target as typeof e.target & {
-      title: { value: string };
-      description: { value: string };
-      duration: { value: string };
-    };
+      title: { value: string }
+      description: { value: string }
+      duration: { value: string }
+    }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/createPoll`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/createPoll`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: form.title.value,
+          description: form.description.value,
+          duration: form.duration.value,
+        }),
       },
-      body: JSON.stringify({
-        title: form.title.value,
-        description: form.description.value,
-        duration: form.duration.value,
-      })
-    });
+    )
 
-    const res: GetPoll = await response.json();
-    console.log(res);
+    const res: GetPoll = await response.json()
+    console.log(res)
 
-    if (res.Type == "failure") {
-      alert(res.Error);
+    if (res.Type == 'failure') {
+      alert(res.Error)
       return
     }
 
-    if (res.Type == "success") {
-      router.push(`/poll/${res.Data.idt}#${res.Data.edit}`);
+    if (res.Type == 'success') {
+      router.push(`/poll/${res.Data.idt}#${res.Data.edit}`)
       return
     }
   }
@@ -67,7 +71,6 @@ const Home: NextPage = () => {
       </main>
     </>
   )
-
 }
 
 export default Home

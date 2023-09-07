@@ -1,65 +1,70 @@
-import { useRef } from 'react';
-import { IoMdClose } from 'react-icons/io';
-import { GetPoll, GetPollData } from 'types/getPoll';
-import styles from 'styles/EditDialog.module.scss';
-import CreatePollForm from './createPollForm';
+import { useRef } from 'react'
+import { IoMdClose } from 'react-icons/io'
+
+import styles from 'styles/EditDialog.module.scss'
+import { GetPoll, GetPollData } from 'types/getPoll'
+
+import CreatePollForm from './createPollForm'
 
 export const useEditDialog = (): [
   ref: React.MutableRefObject<HTMLDialogElement>,
   open: () => void,
   close: () => void,
 ] => {
-  const ref = useRef<HTMLDialogElement>(null);
+  const ref = useRef<HTMLDialogElement>(null)
 
-  const open = () => ref.current.showModal();
-  const close = () => ref.current;
+  const open = () => ref.current.showModal()
+  const close = () => ref.current
 
-  return [ref, open, close];
-};
+  return [ref, open, close]
+}
 
 type EditDialogProps = {
-  dialogRef: React.MutableRefObject<HTMLDialogElement>;
-  pollData: GetPollData;
-  setPollData: React.Dispatch<React.SetStateAction<GetPollData>>;
-  editCode: string;
-  idt: string;
-};
+  dialogRef: React.MutableRefObject<HTMLDialogElement>
+  pollData: GetPollData
+  setPollData: React.Dispatch<React.SetStateAction<GetPollData>>
+  editCode: string
+  idt: string
+}
 
 const EditDialog: React.FC<EditDialogProps> = (props) => {
-  const { dialogRef, pollData, setPollData, editCode, idt } = props;
+  const { dialogRef, pollData, setPollData, editCode, idt } = props
 
   const submit = async (e: React.FormEvent<HTMLElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const form = e.target as typeof e.target & {
-      title: { value: string };
-      description: { value: string };
-      duration: { value: string };
-    };
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASEURL}/editPoll`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        idt,
-        title: form.title.value,
-        description: form.description.value,
-        edit: editCode
-      })
-    });
-
-    const res: GetPoll = await response.json();
-
-    if (res.Type == "failure") {
-      alert(res.Error);
-      return;
+      title: { value: string }
+      description: { value: string }
+      duration: { value: string }
     }
 
-    if (res.Type == "success") {
-      setPollData(res.Data);
-      dialogRef.current.close();
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/editPoll`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          idt,
+          title: form.title.value,
+          description: form.description.value,
+          edit: editCode,
+        }),
+      },
+    )
+
+    const res: GetPoll = await response.json()
+
+    if (res.Type == 'failure') {
+      alert(res.Error)
+      return
+    }
+
+    if (res.Type == 'success') {
+      setPollData(res.Data)
+      dialogRef.current.close()
     }
   }
 
@@ -95,6 +100,6 @@ const EditDialog: React.FC<EditDialogProps> = (props) => {
       </div>
     </dialog>
   )
-};
+}
 
-export default EditDialog;
+export default EditDialog

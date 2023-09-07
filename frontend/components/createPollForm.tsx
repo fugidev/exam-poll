@@ -24,7 +24,7 @@ const CreatePollForm: React.FC<Props> = ({
       id="poll_title"
       name="title"
       defaultValue={title}
-      placeholder={!edit && "Title"}
+      placeholder={!edit && 'Title'}
       required
     />
 
@@ -34,7 +34,7 @@ const CreatePollForm: React.FC<Props> = ({
       id="poll_description"
       name="description"
       defaultValue={description}
-      placeholder={!edit && "Description"}
+      placeholder={!edit && 'Description'}
     />
 
     {!edit && (
@@ -58,9 +58,7 @@ const CreatePollForm: React.FC<Props> = ({
       </select>
     )}
 
-    <button type="submit">
-      {edit ? 'Save' : 'Create Poll'}
-    </button>
+    <button type="submit">{edit ? 'Save' : 'Create Poll'}</button>
   </form>
 )
 

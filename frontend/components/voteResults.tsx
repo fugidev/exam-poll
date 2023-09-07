@@ -10,7 +10,7 @@ type Props = {
 const VoteResults: React.FC<Props> = ({ results, initalFocus }) => {
   const voteCount = Object.values(results).reduce((a, b) => a + b, 0)
 
-  const failureRate = Math.round(results['5.0'] / voteCount * 100)
+  const failureRate = Math.round((results['5.0'] / voteCount) * 100)
 
   if (voteCount === 0) {
     return <p>Nobody has voted (yet).</p>

@@ -22,11 +22,11 @@
 
 .editButton {
   font-size: 1.25rem;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   cursor: pointer;
 
   &:hover {
-    opacity: .7;
+    opacity: 0.7;
   }
 }
 
@@ -36,7 +36,7 @@
   align-items: center;
   margin-bottom: 20px;
 
-  &>div {
+  & > div {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 1fr 1fr;
