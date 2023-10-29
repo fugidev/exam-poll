@@ -3,8 +3,8 @@ package poll
 import (
 	"context"
 	"errors"
-	"github.com/FugiMuffi/exam-poll/backend/internal/env"
-	"github.com/FugiMuffi/exam-poll/backend/internal/mongo"
+	"github.com/fugidev/exam-poll/backend/internal/env"
+	"github.com/fugidev/exam-poll/backend/internal/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

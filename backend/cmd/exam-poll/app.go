@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/FugiMuffi/exam-poll/backend/internal/app"
-	"github.com/FugiMuffi/exam-poll/backend/internal/cron"
-	"github.com/FugiMuffi/exam-poll/backend/internal/env"
+	"github.com/fugidev/exam-poll/backend/internal/app"
+	"github.com/fugidev/exam-poll/backend/internal/cron"
+	"github.com/fugidev/exam-poll/backend/internal/env"
 )
 
 func main() {

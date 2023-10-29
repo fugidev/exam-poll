@@ -1,4 +1,4 @@
-module github.com/FugiMuffi/exam-poll/backend
+module github.com/fugidev/exam-poll/backend
 
 go 1.17
 

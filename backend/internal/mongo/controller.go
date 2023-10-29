@@ -3,7 +3,7 @@ package mongo
 import (
 	"context"
 	"fmt"
-	"github.com/FugiMuffi/exam-poll/backend/internal/env"
+	"github.com/fugidev/exam-poll/backend/internal/env"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

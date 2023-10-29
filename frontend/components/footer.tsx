@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
       <span>
         Exam Poll is{' '}
         <a
-          href="https://github.com/FugiMuffi/exam-poll"
+          href="https://github.com/fugidev/exam-poll"
           target="_blank"
           rel="noreferrer"
           className={styles.sourceLink}

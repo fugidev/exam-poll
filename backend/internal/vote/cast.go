@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	"github.com/FugiMuffi/exam-poll/backend/internal/env"
-	"github.com/FugiMuffi/exam-poll/backend/internal/mongo"
-	"github.com/FugiMuffi/exam-poll/backend/internal/poll"
+	"github.com/fugidev/exam-poll/backend/internal/env"
+	"github.com/fugidev/exam-poll/backend/internal/mongo"
+	"github.com/fugidev/exam-poll/backend/internal/poll"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
