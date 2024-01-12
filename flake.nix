@@ -22,7 +22,7 @@
       });
 
       nixosModules.default = {
-        # imports = [ ./module.nix ];
+        imports = [ ./module.nix ];
 
         nixpkgs.overlays = [ self.overlays.default ];
       };
