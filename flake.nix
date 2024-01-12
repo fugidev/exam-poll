@@ -10,13 +10,16 @@
       in {
         packages = {
           # exam-poll-frontend = pkgs.callPackage ./frontend { };
-          # exam-poll-backend = pkgs.callPackage ./backend { };
+          exam-poll-backend = pkgs.callPackage ./backend { };
         };
 
         formatter = pkgs.nixpkgs-fmt;
       })
     ) // {
-      overlays.default = (_: prev: self.packages.${prev.system});
+      overlays.default = (_: prev: {
+        inherit (self.packages.${prev.system})
+          exam-poll-backend;
+      });
 
       nixosModules.default = {
         # imports = [ ./module.nix ];
