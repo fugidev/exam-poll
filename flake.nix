@@ -9,7 +9,7 @@
       let pkgs = nixpkgs.legacyPackages.${system};
       in {
         packages = {
-          # exam-poll-frontend = pkgs.callPackage ./frontend { };
+          exam-poll-frontend = pkgs.callPackage ./frontend { };
           exam-poll-backend = pkgs.callPackage ./backend { };
         };
 
@@ -18,7 +18,7 @@
     ) // {
       overlays.default = (_: prev: {
         inherit (self.packages.${prev.system})
-          exam-poll-backend;
+          exam-poll-frontend exam-poll-backend;
       });
 
       nixosModules.default = {

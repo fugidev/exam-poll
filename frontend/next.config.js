@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  output: 'standalone',
   reactStrictMode: true,
   i18n: {
     // https://nextjs.org/docs/advanced-features/i18n-routing
