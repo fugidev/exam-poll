@@ -1,4 +1,3 @@
-import * as d3 from 'd3'
 import React, { useEffect, useState } from 'react'
 
 type ResultBarChartProps = {
@@ -14,96 +13,83 @@ const ResultBarChart: React.FC<ResultBarChartProps> = (props) => {
   const margin = 5
   const height = 360
   const width = (barWidth + margin) * data.length - margin
+  const totalCount = Object.values(props.results).reduce((a, b) => a + b, 0)
 
-  const [ divRef ] = useState(React.createRef<HTMLDivElement>())
+  const [svgRef] = useState(React.createRef<SVGSVGElement>())
+
+  const getBarLabel = (label: string, count: number) => {
+    const votesString = count === 1 ? 'vote' : 'votes'
+    const percent = Math.round((count / totalCount) * 100)
+
+    return `${count} ${votesString} for ${label} (${percent} percent)`
+  }
+
+  const getBarHeight = (gradeCount: number) => {
+    return height * (gradeCount / Math.max(...Object.values(props.results)))
+  }
 
   useEffect(() => {
     // initially focus the bar chart after pressing vote / show results, for screen readers
-    if (props.initialFocus) divRef.current.focus()
-
-    const totalCount = Object.values(props.results).reduce(
-      (a, b) => a + b,
-      0,
-    )
-
-    const getBarLabel = (label: string, count: number) => {
-      return `${count} ${
-        count === 1 ? 'vote' : 'votes'
-      } for ${label} (${Math.round((count / totalCount) * 100)} percent)`
-    }
-
-    const svg = d3
-      .select(divRef.current)
-      .append('svg')
-      .attr('viewBox', `0 0 ${width} ${height}`)
-      .attr('data-chart', 'bar')
-
-    const scale = (d: any) =>
-      height * (d / Math.max(...data.map((v) => v[1])))
-
-    const g = svg
-      .selectAll('g')
-      .data(data.map((v) => v[1]))
-      .enter()
-      .append('g')
-      .attr(
-        'transform',
-        (d, i) => `translate(${i * (barWidth + margin)}, 0)`,
-      )
-      .attr('aria-label', (d, i) =>
-        getBarLabel(data[i][0], data[i][1]),
-      )
-
-    g.append('rect')
-      .attr('aria-hidden', true)
-      .attr('height', height)
-      .attr('width', barWidth)
-      .attr('fill', 'transparent')
-
-    const g1 = g
-      .append('g')
-      .attr('transform', (d) => `translate(0, ${height - scale(d)})`)
-
-    g1.append('rect')
-      .attr('aria-hidden', true)
-      .attr('height', (d) => scale(d))
-      .attr('width', barWidth)
-      .attr('fill', '#f7fff7')
-
-    g1.append('text')
-      .attr('aria-hidden', true)
-      .attr('fill', 'white')
-      .attr('alignment-baseline', 'central')
-      .attr('dy', '-1em')
-      .attr('text-anchor', 'middle')
-      .attr('dx', barWidth / 2)
-      .attr('transform', (d) => 'translate(' + 0 + ', ' + scale(d) + ')')
-      .text((d, i) => data[i][0])
-
-    g1.append('text')
-      .attr('aria-hidden', true)
-      .attr('fill', 'white')
-      .attr('alignment-baseline', 'central')
-      .attr('dy', '1em')
-      .attr('text-anchor', 'middle')
-      .attr('dx', barWidth / 2)
-      .text((d, i) => data[i][1])
+    if (props.initialFocus) svgRef.current.focus()
   }, [])
 
   return (
-    <>
-      <style jsx>{`
-        div {
-          width: 100%;
-          max-width: ${width}px;
-          margin-bottom: 1rem;
-        }
-        div :global(svg text) {
-          mix-blend-mode: difference;
-        }
-      `}</style>
-      <div ref={divRef} tabIndex={-1}></div>
-    </>
+    <svg
+      ref={svgRef}
+      tabIndex={-1}
+      viewBox={`0 0 ${width} ${height}`}
+      style={{
+        width: '100%',
+        maxWidth: `${width}px`,
+        marginBottom: '1rem',
+      }}
+    >
+      {data.map(([grade, gradeCount], i) => (
+        <g
+          key={grade}
+          transform={`translate(${i * (barWidth + margin)}, 0)`}
+          aria-label={getBarLabel(grade, gradeCount)}
+        >
+          <rect
+            aria-hidden
+            height={height}
+            width={barWidth}
+            fill="transparent"
+          />
+          <g transform={`translate(0, ${height - getBarHeight(gradeCount)})`}>
+            <rect
+              aria-hidden
+              height={getBarHeight(gradeCount)}
+              width={barWidth}
+              fill="#f7fff7"
+            />
+            <text
+              aria-hidden
+              fill="white"
+              style={{ mixBlendMode: 'difference' }}
+              alignmentBaseline="central"
+              textAnchor="middle"
+              dy="-1em"
+              dx={barWidth / 2}
+              transform={`translate(0, ${getBarHeight(gradeCount)})`}
+            >
+              {grade}
+            </text>
+            <text
+              aria-hidden
+              fill="white"
+              style={{ mixBlendMode: 'difference' }}
+              alignmentBaseline="central"
+              textAnchor="middle"
+              dy="1em"
+              dx={barWidth / 2}
+            >
+              {gradeCount}
+            </text>
+          </g>
+        </g>
+      ))}
+    </svg>
   )
 }
 
