@@ -21,8 +21,7 @@ Replace the domains for frontend and api in `docker-compose.prod.yml` and hook u
 Then run the following command to deploy everything:
 
 ```sh
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
- --build
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 ```
 
 ### NixOS module
