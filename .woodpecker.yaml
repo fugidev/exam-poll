@@ -1,0 +1,23 @@
+variables:
+  - &base-step
+    image: codeberg.org/woodpecker-plugins/node-pm
+    directory: frontend
+  - &base-plugin-settings
+    with: yarn
+    frozen_lockfile: true
+
+when:
+  - path:
+      include: ['frontend/*', '.woodpecker.yaml']
+
+steps:
+  lint:
+    <<: *base-step
+    settings:
+      <<: *base-plugin-settings
+      run: lint
+  build:
+    <<: *base-step
+    settings:
+      <<: *base-plugin-settings
+      run: build
