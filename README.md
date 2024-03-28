@@ -35,7 +35,7 @@ This repository includes a Flake that provides a NixOS module for exam poll. You
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    exam-poll.url = "github:fugidev/exam-poll";
+    exam-poll.url = "git+https://codeberg.org/fugi/exam-poll.git";
   };
 
   outputs = { self, nixpkgs, exam-poll }: {
