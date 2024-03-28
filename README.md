@@ -1,5 +1,7 @@
 # Exam Poll
 
+[![status-badge](https://ci.codeberg.org/api/badges/13195/status.svg)](https://ci.codeberg.org/repos/13195)
+
 Exam Poll is a tool for creating polls about exam results. It aims to be simplistic and accessible. Anyone can create a poll and share a link to it. Polls can be edited by their creator and run for a specified time span.
 
 The current implementation consists of a backend written in Go, which uses MongoDB, and a server-side rendered frontend using NextJS.
