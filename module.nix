@@ -6,6 +6,9 @@ let
     {
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
+      environment = {
+        HOME = "/tmp";
+      };
       serviceConfig = {
         Type = "exec";
         Restart = "on-failure";
